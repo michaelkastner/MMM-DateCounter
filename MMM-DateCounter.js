@@ -2,12 +2,40 @@
 *  Module: Date Counter
 *
 *  By Jesse Alltop
+*  Adopted by: @michaelkastner (localization)
 */
 
 Module.register("MMM-DateCounter", {
+	_localizations: {
+		de: {
+			year: "Jahr",
+			years: "Jahre",
+			month: "Monat",
+			months: "Monate",
+			week: "Woche",
+			weeks:"Wochen",
+			day: "Tag",
+			days: "Tage",
+			hour: "Stunde",
+			hours: "Stunden",
+			minute: "Minute",
+			minutes: "Minuten",
+			second: "Sekunde",
+			seconds: "Sekunden"
+		}
+	},
+	getLocalized: function(stringEN) {
+		const locale = this._localizations[this.config.locale];
+		if (locale) {
+			if (locale[stringEN]) { return locale[stringEN]; }
+		}
+
+		return stringEN;
+	},
 
 	//Module config defaults
 	defaults: {
+		locale: 'en',
 		updateInterval: 1000,
 		remoteFile: null,
 		eventDate: "2020-07-15",
@@ -170,7 +198,7 @@ Module.register("MMM-DateCounter", {
 		var displayText = "";
 		for (const [key, value] of units.entries()) {
 			if (key === "second" || value !== 0) {
-				displayText = displayText.concat(displayText.length === 0 ? "" : ", ", value, " ", key, value > 1 ? "s" : "");
+				displayText = displayText.concat(displayText.length === 0 ? "" : ", ", value, " ", this.getLocalized(key + (value > 1 ? "s" : "")));
 			}
 		}
 
